@@ -28,7 +28,9 @@ def extract_indeed_jobs(last_page_num):
             try:
                 title = l.find("a")["title"]
                 location = l.find(class_={"recJobLoc"})["data-rc-loc"]
-                job_list.append({"title": title, "location": location})
+                id = l["data-jk"]
+                url = f"{URL}&vjk={id}"
+                job_list.append({"title": title, "location": location, "url": url})
             except Exception:
                 pass
     print("Extracting done! Result:\n")
