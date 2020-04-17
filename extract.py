@@ -17,10 +17,10 @@ def max_page_num():
 
 
 def extract_indeed_jobs(last_page_num):
-    job = []
     job_list = []
-    print("Extracting on process...")
+    print(f"Total pages to extract: {last_page_num}")
     for p in range(last_page_num):
+        print(f"Extracting page {p+1}")
         response = requests.get(f"{URL}&start={p*LIMIT}")
         soup = BeautifulSoup(response.text, "html.parser")
         lists = soup.find_all("div", class_={"jobsearch-SerpJobCard"})
@@ -33,5 +33,4 @@ def extract_indeed_jobs(last_page_num):
                 job_list.append({"title": title, "location": location, "url": url})
             except Exception:
                 pass
-    print("Extracting done! Result:\n")
-    print(job_list)
+    return job_list
