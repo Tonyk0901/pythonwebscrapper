@@ -1,3 +1,4 @@
+import csv
 import requests
 from bs4 import BeautifulSoup
 
@@ -18,9 +19,9 @@ def max_page_num():
 
 def extract_indeed_jobs(last_page_num):
     job_list = []
-    print(f"Total pages to extract: {last_page_num}")
+    print(f"Total pages to scrape: {last_page_num}")
     for p in range(last_page_num):
-        print(f"Extracting page {p+1}")
+        print(f"Scraping [{p+1}/{last_page_num}]")
         response = requests.get(f"{URL}&start={p*LIMIT}")
         soup = BeautifulSoup(response.text, "html.parser")
         lists = soup.find_all("div", class_={"jobsearch-SerpJobCard"})
@@ -34,3 +35,11 @@ def extract_indeed_jobs(last_page_num):
             except Exception:
                 pass
     return job_list
+
+
+def save_csv(lists):
+    with open("indeed_jobs/jobs.csv", mode="w") as jobs_file:
+        jobs_writer = csv.writer(jobs_file)
+        jobs_writer.writerow(["Title", "Location", "Link"])
+        for l in lists:
+            jobs_writer.writerow(list(l.values()))
