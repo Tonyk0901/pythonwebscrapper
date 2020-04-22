@@ -2,7 +2,8 @@ import csv
 import requests
 from bs4 import BeautifulSoup
 
-URL = "https://www.indeed.com/jobs?q=python%20developer&l=Seattle%2C%20WA&limit=50"
+WORD = "python"
+URL = f"https://www.indeed.com/jobs?q={WORD}}%20developer&l=Seattle%2C%20WA&limit=50"
 # https://www.indeed.com/jobs?q=python%20developer&l=Seattle%2C%20WA&limit=50
 
 

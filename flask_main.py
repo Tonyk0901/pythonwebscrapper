@@ -1,16 +1,12 @@
 from flask import Flask, render_template, request, redirect
+import indeed_job_scrape
 
-app = Flask("Super Scrapper")
+app = Flask("Indeed Scrapper")
 
 
 @app.route("/")
 def home():
     return render_template("flask_home.html")
-
-
-@app.route("/contact")
-def contact():
-    return "haha! ya found me!"
 
 
 @app.route("/result")

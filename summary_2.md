@@ -93,3 +93,5 @@ else :
 
 If word is not given, you can direct the user to a page you want by using the redirect function.
 Important note: if you want to redirect to root page, the specific url is "/"
+
+## For sure do some research and learn precisely about the git fetch and git pull and all the options available for those command for god's sake. git's fucking giving me headaches.
