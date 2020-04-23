@@ -82,6 +82,8 @@ First, pass the keyward arguement. Second, called the key in the html by followi
 
 ## 4.4 Scrapper Integration
 
+In this lecture, we integrate the scrapper we built previously into the flask app. There are some fixes made for now we want to search for jobs of any programming stacks, not just the python.
+
 ```python
 from flask import redirect
 
@@ -95,3 +97,52 @@ If word is not given, you can direct the user to a page you want by using the re
 Important note: if you want to redirect to root page, the specific url is "/"
 
 ## For sure do some research and learn precisely about the git fetch and git pull and all the options available for those command for god's sake. git's fucking giving me headaches.
+
+## 4.5 Faster Scrapper
+
+In this lecture, we implemented a fake db that stores the search result so that when a same keyword is searched for the second time, we don't need to run the script again, which saves a ton of time.
+
+To do so, simply implement a dictionary outside of the app scope as
+
+```python
+db = {}
+```
+
+And add block of codes which checks for the existence of the data and inserts one if it does not exist.
+
+```python
+if word not in db.keys():
+    job = indeed_job_scrape.get_jobs(word)
+    db[word] = job
+```
+
+## 4.6 Rendering Jobs!
+
+CSS grid!
+
+```css
+section {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+```
+
+grid-template-columns sepecifies the width of each column. For example, `grid-template-columns : 1fr 1fr 1fr 1fr, it will create four columns, with 1:1:1:1 width ratio. repeat(4, 1fr) is just a shortened form of it. Another example is, 1fr 2fr 1fr 2fr is equivalent to repeat(2, 1fr 2fr)
+
+Similarly, you can set the grid height by using grid-template-rows.
+
+```html
+<head>
+  <style>
+    section {
+      display: grid;
+    }
+  </style>
+</head>
+```
+
+You don't need to set the link to the css. You can setup the style directly inside the head part.
+
+## 4.7 & 4.8 Export Route and File Download
+
+In this sections, we add the previously built save_to_csv function and implement a button that allows downloading the csv file that has the search results.

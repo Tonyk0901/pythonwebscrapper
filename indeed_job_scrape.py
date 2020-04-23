@@ -2,24 +2,20 @@ import csv
 import requests
 from bs4 import BeautifulSoup
 
-WORD = "python"
-URL = f"https://www.indeed.com/jobs?q={WORD}}%20developer&l=Seattle%2C%20WA&limit=50"
-# https://www.indeed.com/jobs?q=python%20developer&l=Seattle%2C%20WA&limit=50
 
-
-def max_page_num():
-    response = requests.get(URL)
+def max_page_num(url):
+    response = requests.get(url)
     soup = BeautifulSoup(response.text, "html.parser")
     lists = soup.find("div", class_={"pagination"}).find_all("span")
     return int(lists[-3].string)
 
 
-def extract_indeed_jobs(last_page_num):
+def extract_indeed_jobs(last_page_num, url):
     job_list = []
     print(f"Total pages to scrape: {last_page_num}")
     for p in range(last_page_num):
         print(f"Scraping [{p+1}/{last_page_num}]")
-        response = requests.get(f"{URL}&start={p*50}")
+        response = requests.get(f"{url}&start={p*50}")
         soup = BeautifulSoup(response.text, "html.parser")
         lists = soup.find_all("div", class_={"jobsearch-SerpJobCard"})
         for l in lists:
@@ -48,3 +44,9 @@ def save_csv(lists):
         jobs_writer.writerow(["Company", "Title", "Location", "Link"])
         for l in lists:
             jobs_writer.writerow(list(l.values()))
+
+
+def get_jobs(search_word):
+    url = f"https://www.indeed.com/jobs?q={search_word}%20developer&l=Seattle%2C%20WA&limit=50"
+    last_page = max_page_num(url)
+    return extract_indeed_jobs(last_page, url)
