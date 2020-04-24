@@ -39,7 +39,7 @@ def extract_indeed_jobs(last_page_num, url):
 
 
 def save_csv(lists):
-    with open("indeed_jobs/jobs.csv", mode="w") as jobs_file:
+    with open("jobs.csv", mode="w") as jobs_file:
         jobs_writer = csv.writer(jobs_file, quoting=csv.QUOTE_ALL)
         jobs_writer.writerow(["Company", "Title", "Location", "Link"])
         for l in lists:

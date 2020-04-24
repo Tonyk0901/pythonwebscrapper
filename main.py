@@ -33,19 +33,16 @@ def result():
 @app.route("/download")
 def download():
     try:
-        word = request.args.get("word")
+        word = request.args.get("job_name")
         if not word:
             raise Exception
         word = word.lower()
         if word not in db.keys():
             raise Exception
-        print("It got here!!")
         indeed_job_scrape.save_csv(db.get(word))
-        send_file(
-            "/indeed_jobs/jobs.csv", as_attachment=True, attachment_filename="hehe.csv"
+        return send_file(
+            "jobs.csv", as_attachment=True, attachment_filename=f"{word}_jobs.csv",
         )
-        print("Did it got here?")
-        return redirect("/result?job_name={word}")
     except Exception:
         return redirect("/")
 
