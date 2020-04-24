@@ -1,4 +1,4 @@
-## 4.2 Dynamic URLs and Templates
+## #4.2, Dynamic URLs and Templates
 
 In this section, I learned how to deal with a variable in the url, and render_template function of flask.
 
@@ -146,3 +146,20 @@ You don't need to set the link to the css. You can setup the style directly insi
 ## 4.7 & 4.8 Export Route and File Download
 
 In this sections, we add the previously built save_to_csv function and implement a button that allows downloading the csv file that has the search results.
+
+```python
+from flask import send_file
+return send_file(
+            "jobs.csv", as_attachment=True, attachment_filename=f"{word}_jobs.csv",
+        )
+```
+
+send_file function sends (downloads) a chosen file (jobs.csv) to the user. By default, the downloaded file name is download, but if you want to specify the name to what you want, you can add `as_attachment` and `attachment_filename` attribute as in the sample code.
+
+## Conclusion
+
+In this project, I build a web scrapper using python framework flask. This program takes the field of programming langauge as a user input and searches jobs in the field from indeed. Then, it displays the search results which has the link to the job description and application. Also, it provides a download of the result in csv format.
+
+There are still some more improvements needs to be made. For one thing, this script does not scrape the entire jobs. That is because some job descriptions have different html elements. I did not tweak my script to handle all those exceptions for the purpose of this project was to have a working prototype.
+
+Also, the webpage design is horrible because it's just a pure html without any styling. I will come back to make it look better once I finish the html/css courses and get myself more familiar with them.

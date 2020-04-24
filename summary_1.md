@@ -1,135 +1,175 @@
-## 1.2 Tuples and Dicts
+# Python Web Scrapper
 
-Mutable vs immutable
+## #1, Theory
 
-python standard library.
+Learned basic python syntax.
 
-list has the standard method reverse which reverses the order of the elements in the list.
-usegae => list.reverse()
+- Python Standard Library.
 
-you can include list or tuple or whatever datatype as dictionary key. However, the key has to be a text wrapped inside the double quotes.
-test_dic = {"dic_key1" : test_list, "dic_key2" : "test_values",}
+  https://docs.python.org/3/library/
 
-## 1.5 Custom functions
+- Mutable vs immutable
+- List has reverse function that reverses its order.
 
-def minus(a,b=0):
-print(a-b)
+  ```python
+  test_list.reverse()
+  ```
 
-as in b=0, you can set the default value of the argument if the argument is not passed when the function is called.
+  By the way, the name `list` is already occupied by python. So be careful not to name a variable as list.
 
-## 1.8 Keywarded Arguments
+- In dictionary, the key should be a string while the value can be any type.
 
-positional arguements vs keywarded arguments
+  ```python
+  test_dic = {"dic_key1" : test_list, "dic_key2" : "test_values"}
+  ```
 
-## 1.10 conditionals part one
+- When defining a function, you can set the default of the argument.
 
-checking the variable type
-if type(b) is str :
-is and is not are for checking object identity. So know the difference between ==, != and is, is not.
+  ```python
+  def minus(a, b = 0):
+  ```
 
-## 1.12 For in
+- You can check the type of a variable.
 
-for letter in "tony":
-letter variable is created when the for loop starts and is erased when the loop ends. It is created for the iterate purpose. What comes after in is the element of a sequence, such as string, tuple, or list. (even the dictionary! variable will contain the key value.)
+  ```python
+  if type(b) is str :
+  ```
 
-## 1.13 modules
+  `is` and `is not` are for checking object identity. Know the difference between `==`, `!=` and `is`, `is not`.
 
-from math import ceil, fsum as cool_sum
-import math
-you can import only the functions you need instead of importing the entire package. Also, you can custom name the function by using as.
+- String is a list. You can set the for loop with a string.
 
-## 2.0 & 2.1 What Is Web Scrapping / What Are We Building
+  ```python
+  for letter in "tony":
+    print(letter)
 
-Simple intro explaining what web scrapping is and what goal we want to achieve through web scrapper.
+  #t
+  #o
+  #n
+  #y
+  ```
 
-## 2.2 Navigating with Python
+  In place of `"tony"` should come an element of sequence: string, list, tuple, dictionary.
 
-1. Setting up the environment for this project.
+- You can import python packages.
+  ```python
+  import math
+  from math import ceil, fsum as cool_sum
+  ```
+  You can either import the entire package or just the functions you want. Also you can rename the imported function using `as`.
 
-- pipenv --three
-- pipenv shell
-- pipenv requests
-- set the interpreter of the vscode to the virtual environment.
+## #2.0 ~ #2.3, Setting Up Environment
 
-2. Get the response object using request library.
+- Build a virtual environment using pipenv.
+  ```
+  pipenv --three
+  pipenv shell
+  pipenv install requests
+  pipenv install bs4
+  ```
+- Set the interpreter of VSCode to the virtual environment.
 
-- pipenv install requests
-- import requests
-- result = requests.get("url")
-- result.text gives you the html of the page in text form. But this is super complex to look at. Thus, we will use the beautifulsoup4 library to parse this.
+## 2.3 ~ # 2.13, Scrapping
 
-## 2.3 & 2.4 & 2.5 Extracting Pages
+Extract data using `requests` and `bs4` library.
 
-Used requests and bs4 library to make a request to the given url and extract information from the response.
+- Get the response object using request library.
 
-- `response = requests.get(URL)`
-  Gives you the response object.
-- `response = requests.get(f"{URL}&start={p*LIMIT}").status_code`
-  Status code gives 200 if the response was received successfully.
-- `response.text`
-  Gives you the string format of the page html.
-- `soup = BeautifulSoup(response.text, "html.parser")`
-  Pass the string format of the html into BeautifulSoup function to build the parse so that I can extract information I want.
-- `lists = soup.find("div", class_={"pagination"}).find_all("span")`
-  Use the find method, which takes in the name of the tag or the name of the class, to get the element you want. Syntax is as shown in the code.
-- `p.string` (bs4 method)
-  Gives you the text inside the element you picked.
+  ```python
+  import requests
+  from bs4 import BeautifulSoup
+  response = requests.get("url")
+  result = response.text
+  ```
 
-## 2.6 & 2.7 & 2.8 Extracting Information From Each Page
+  `result` is a response object. It can be of various format. `response.text` turns it into a text. `response.json()` turns it into a JSON.
 
-Using the same principle, extract the information you want.
+- You can check if the webpage is up or down.
 
-1. Send requests and get response of the html object of the page.
-2. Parse the response using BeautifulSoup library.
-3. Get the html element that contains the information you want by using find method.
-4. Usually the information is stored in the attribute rather than in the text. Thus, retrieve the attribute info.
-5. Store the information in the array as a form of dictionary. e.g. [{"country":country, "code":code}, ...]
+  ```python
+  response = requests.get(URL).status_code
+  ```
 
-- <html_obj>["title"]
-  Brings the information of the title attribute. (bs4 method)
+  `response` is 200 if webpage is up, 404 if down.
 
-## 2.9 & 2.10 & 2.11 & 2.12 & 2.13 Extracting StackOverFlow
+- `bs4` provides tools to parse the html text.
 
-Same thing for the stackoverflow website.
+  ```python
+  soup = BeautifulSoup(response.text, "html.parser")
+  ```
 
-## 2.14 & 2.15 & 2.16 Saving to CSV
+- Find the html element by using `find` or `find_all`.
 
-Using python standard library, csv, save the extracted data to .csv file.
+  ```python
+  div_element = soup.find("div", class_={"pagination"}).find_all("span")
+  ```
 
-1. Create csv file.
+  First arugement is the name of html tag. `class_` specifies the class of the element you want to find. `find` finds one element, and `find_all` finds all element and return in list format.
 
-- `import csv`
-- `with open("jobs.csv", mode="w") as jobs_file:`
-  For reading mode, mode="r"
-- with clause is shorthand for try/final. Always runs exit() at the end.
+- You can get the inner text.
 
-2. Create writer
+  ```python
+  text = soup.find("div").string
+  ```
 
-- `jobs_writer = csv.writer(jobs_file)`
+- You can get a certain attribute of the element.
 
-3. Write to the file.
+  ```python
+  title_attribute = soup.find("div")["title"]
+  ```
 
-- `jobs_writer.writerow(["Title", "Location", "Link"])`
+- Recap
+  1. Send requests and get response from the page.
+  2. Turn the response into a either JSON or text.
+  3. If text, you can parse the content using BeautifulSoup library.
+  4. Get the html element that contains the target information by using find function.
+  5. Get the text. Sometimes the information is stored in the attribute rather than in the text. If that's the case, retrieve the attribute.
+  6. Store the information in the array as a form of dictionary. e.g. `[{"country":country, "code":code}, ...]`
 
-- os.remove("jobs.csv")
-  os command for removing files.
+## #2.14 ~ #2.16, Saving to CSV
 
-## 3.1 The difference between \*args and \*\*kwargs.
+Using standard package, csv, save data to .csv file.
 
-\**kwargs, kwargs are a dictionary of keywarded arguements and *args is a list of arguements.
+- Create .csv file.
 
-def myFun(\*args,\*\*kwargs):
-print("args: ", args)
-print("kwargs: ", kwargs)
+  ```python
+  import csv
+  with open("jobs.csv", mode="w") as jobs_file:
+    # with block.
+  ```
 
-# Now we can use both \*args ,\*\*kwargs to pass arguments to this function :
+  `mode="w"` means write mode. If you want read mode, `mode="r"`.
 
-myFun('geeks','for','geeks',first="Geeks",mid="for",last="Geeks")
+  `with` is a shorthand for `try` / `final`. It ensures the `exist()` / `close()` at the end.
 
-args: ('geeks', 'for', 'geeks')
-kwargs {'first': 'Geeks', 'mid': 'for', 'last': 'Geeks'}
+- Create a writer and write
+  ```python
+  jobs_writer = csv.writer(jobs_file)
+  jobs_writer.writerow(["Title", "Location", "Link"])
+  ```
 
-## 4.1 Introduction to flask
+## #3.1, Variable Arguments / Keyworded Arugments
+
+In case you cannot specify exact number of argument, you can use the variable arguments / keyworded arguments concept. `*` or `**` is used infornt of arguments to show that arguments can be multiple.
+
+- `*` stores multiple arguements in a list. `**` stores keyworded arguments in a dictionary.
+
+  ```python
+  def myFun(*args,**kwargs):
+    print("args: ", args)
+    print("kwargs: ", kwargs)
+
+  myFun('geeks','for','geeks',first="Geeks",mid="for",last="Geeks")
+  ```
+
+  gives the output
+
+  ```
+  args: ('geeks', 'for', 'geeks')
+  kwargs {'first': 'Geeks', 'mid': 'for', 'last': 'Geeks'}
+  ```
+
+## #4.1, Introduction to flask
 
 This section, I learned to start the basic flask application.
 
@@ -150,27 +190,38 @@ If you want to run the function when a certain url is posted, use above block of
 
 - Need to recap what decorator is.
 
-## Side learning about the network stuffs.
+## Side Notes
 
-This section is still on progress. I will come back to it later after I finish python lectures first.
+- Useful VSCode shortcuts.
 
-- To restart, command+shift+p, and search for reload window!
-- To go to next line, command + enter
-- To open a file, command + p
-- To split the current window, command + \
-- .DS_Store is a file that contains the desktop service, such as position of icons or choice of backgrounds.
--
+  1. To restart, `command + shift + p`, and search for <u>reload window</u>!
+  2. To go to next line, `command + enter`.
+  3. To open a file, `command + p`.
+  4. To split the current window, `command + \`.
+  5. `.DS_Store` is a file that contains the desktop service, such as position of icons or choice of backgrounds.
 
-```python
-if var :
-```
+- To remove a file, use `os.remove`. To check if file exists, `os.path.exists`
 
-is equivalent to
+  ```python
+  import os
+  os.path.exists("<url_or_filename>")
+  os.remove("<url_or_filename>")
+  ```
 
-```python
-if bool(var) :
-```
+- You can simply pass a variable to `if` condition. Python automatically checks if any value is assigned to the variable.
 
+  ```python
+  if var :
+  ```
+
+  is equivalent to
+
+  ```python
+  if bool(var) :
+  ```
+
+- Computer network stuffs.
+  1. Key concepts:
 - learning about how computer network works. Key concepts: IP addresses, route, router, packet, hop,
 - IP address is the unique identifier given to "each device" connected to the internet.
 - IP address is IPv4 or IPv6. IPv4 is 32-bit. Since the growth of the internet and the depletion of the available addresses, IPv6 is introduced, which is 64-bit.
